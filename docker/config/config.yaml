@@ -1,0 +1,37 @@
+databases:
+  mongo:
+    connection:
+      external_host:
+      external_port:
+      qcloud_host:
+      qcloud_port:
+      user:
+      pwd:
+    database:
+      metaverse_video: "metaverse_video"
+      resource: "resource"
+    table:
+      user2final: "user_to_final_video"
+      spider_video: "spider_video"
+      spider_user: "spider_user"
+      task_info: "task_info"
+
+redis:
+  auth:
+  host:
+  port:
+  douyin_user_video_queue_name: "panda_spider_douyin_user_video"
+  video_process_function: "worker.spider_video_process.run"
+  video_process_queue_timeout: '12h'
+
+cos:
+  credentials:
+    secret_id:
+    secret_key:
+    cos_region:
+  storage:
+    cos_bucket:
+
+download_cosfile:
+  threadpool:
+    max_worker: 5

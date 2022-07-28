@@ -1,0 +1,35 @@
+version: "3.8"
+
+networks:
+  douyin_spider-network:
+    driver: bridge
+
+volumes:
+  douyin_spider_worker_log:
+
+services:
+  douyin-spider-worker:
+    container_name: douyin-spider-worker
+    expose:
+      - 8088
+    ports:
+      - "9002:8088"
+    volumes:
+      - "douyin_spider_worker_log:/var/log"
+    image: "mirav.tencentcloudcr.com/mira/douyin-spider-worker:v0.3.1"
+    restart: always
+    networks:
+      - douyin-spider-network
+
+  douyin-user-spider-worker:
+    image: "mirav.tencentcloudcr.com/mira/douyin-spider-worker:v0.3.1"
+    restart: unless-stopped
+    deploy:
+      replicas: 3
+    command:
+      [
+        "bash",
+        "-c",
+        "conda run --no-capture-output --name douyin-spider-worker rq worker panda_spider_douyin_user_video --url redis://: --path ./ --name douyin-spider-user-worker-$$RANDOM"
+      ]
+
